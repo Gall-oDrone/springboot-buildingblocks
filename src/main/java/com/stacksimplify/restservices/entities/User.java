@@ -6,6 +6,8 @@ import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,22 +17,27 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 //Entity
+// and
+@ApiModel(description = "This model is to create a user")
 @Entity
 @Table(name = "user")
 //@JsonIgnoreProperties({"firstname", "lastname"}) -- Static Filtering JsonIgnore
 //@JsonFilter(value = "userFilter") -+ Used for MappingJacksonValue filtering section
 public class User extends RepresentationModel {
 	
+	@ApiModelProperty(notes = "Auto generated unique id", required = true, position = 1)
 	@Id
 	@GeneratedValue
 	@JsonView(Views.External.class)
 	private Long userid;
 	
+	@ApiModelProperty(notes = "username sholud be in format flname", example = "andy", required = true, position = 2)
+	@Size(min = 2, max = 50)
 	@NotEmpty(message = "Username is Mandatory field. Please Provide username")
 	@Column(name = "USER_NAME", length=50, nullable=false, unique=true)
 	@JsonView(Views.External.class)
 	private String username;
-	@Size(min=2, message="FirstName should have at least 2 characters")
+	@Size(min=2, max = 50, message="FirstName should have at least 2 characters")
 	@Column(name = "FIRST_NAME", length=50, nullable=false)
 	@JsonView(Views.External.class)
 	private String firstname;
